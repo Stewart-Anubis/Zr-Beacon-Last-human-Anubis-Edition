@@ -102,7 +102,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 
 	if (zombies > 0 && humans == 1 && client != -1 && (!g_BeaconActive))
 	{
-		CreateTimer(1.0, Timer_Beacon, client, TIMER_REPEAT);
+		CreateTimer(1.0, Timer_Beacon, client, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 		g_BeaconActive = true;
 	}
 	
@@ -135,20 +135,20 @@ public Action:Timer_Beacon(Handle:timer, any:client)
 	{
 		new Float:vec[3];
 		GetClientAbsOrigin(client, vec);
-		vec[2] += 30;
+		vec[2] += 10;
 		
 		if (b_colors == 0) {
-		TE_SetupBeamRingPoint(vec, 10.0, 375.0, g_BeamSprite, g_HaloSprite, 0, 10, 0.6, 10.0, 0.5, redColor, 10, 0);
+		TE_SetupBeamRingPoint(vec, 10.0, 190.0, g_BeamSprite, g_HaloSprite, 0, 15, 1.0, 5.0, 0.0, redColor, 10, 0);
 		} else if (b_colors == 1) {
-		TE_SetupBeamRingPoint(vec, 10.0, 375.0, g_BeamSprite, g_HaloSprite, 0, 10, 0.6, 10.0, 0.5, orangeColor, 10, 0);
+		TE_SetupBeamRingPoint(vec, 10.0, 190.0, g_BeamSprite, g_HaloSprite, 0, 15, 1.0, 5.0, 0.0, orangeColor, 10, 0);
 		} else if (b_colors == 2) {
-		TE_SetupBeamRingPoint(vec, 10.0, 375.0, g_BeamSprite, g_HaloSprite, 0, 10, 0.6, 10.0, 0.5, greenColor, 10, 0);
+		TE_SetupBeamRingPoint(vec, 10.0, 190.0, g_BeamSprite, g_HaloSprite, 0, 15, 1.0, 5.0, 0.0, greenColor, 10, 0);
 		} else if (b_colors == 3) {
-		TE_SetupBeamRingPoint(vec, 10.0, 375.0, g_BeamSprite, g_HaloSprite, 0, 10, 0.6, 10.0, 0.5, blueColor, 10, 0);
+		TE_SetupBeamRingPoint(vec, 10.0, 190.0, g_BeamSprite, g_HaloSprite, 0, 15, 1.0, 5.0, 0.0, blueColor, 10, 0);
 		} else if (b_colors == 4) {
-		TE_SetupBeamRingPoint(vec, 10.0, 375.0, g_BeamSprite, g_HaloSprite, 0, 10, 0.6, 10.0, 0.5, whiteColor, 10, 0);
+		TE_SetupBeamRingPoint(vec, 10.0, 190.0, g_BeamSprite, g_HaloSprite, 0, 15, 1.0, 5.0, 0.0, whiteColor, 10, 0);
 		} else if (b_colors >= 5) {
-		TE_SetupBeamRingPoint(vec, 10.0, 375.0, g_BeamSprite, g_HaloSprite, 0, 10, 0.6, 10.0, 0.5, greyColor, 10, 0);
+		TE_SetupBeamRingPoint(vec, 10.0, 190.0, g_BeamSprite, g_HaloSprite, 0, 15, 1.0, 5.0, 0.0, greyColor, 10, 0);
 		}
 		TE_SendToAll();
 
