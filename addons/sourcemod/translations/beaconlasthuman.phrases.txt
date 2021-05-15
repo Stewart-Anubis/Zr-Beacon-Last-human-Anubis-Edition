@@ -2,7 +2,7 @@
 {
 	"Last human is under beacon"
 	{
-		"#format"		"{1:.0f}"
+		"#format"		"{1:d}"
 		"en"			"Last human is under beacon for {1} seconds."
 	}
 }
