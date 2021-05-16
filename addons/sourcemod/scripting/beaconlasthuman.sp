@@ -34,8 +34,6 @@
 #include <sdktools>
 #include <sdkhooks>
 
-#include <zombiereloaded>
-
 #pragma newdecls required
 
 ConVar g_chTime = null;
@@ -100,6 +98,12 @@ public void ConVarChange(ConVar CVar, const char[] oldVal, const char[] newVal)
 
 public Action Event_PlayerDeath(Handle event, const char[] name, bool dontBroadcast)
 {
+	if (!g_bBeaconActive && !g_bRoundEnd) CreateTimer(1.0, Timer_PlayersCount, TIMER_FLAG_NO_MAPCHANGE);
+	return;
+}
+
+public Action Timer_PlayersCount(Handle timer)
+{
 	if (g_bBeaconActive) return;
 	int humans = 0;
 	int zombies = 0;
@@ -108,16 +112,17 @@ public Action Event_PlayerDeath(Handle event, const char[] name, bool dontBroadc
 
 	for (int i = 1; i <= MaxClients; i++)
 	{
-		if (!IsValidClient(i, true)) continue;
-
-		if (GetClientTeam(i) == 3)
+		if (IsValidClient(i, true))
 		{
-			humans++;
-			client = i;
-		}
-		else if (GetClientTeam(i) == 2)
-		{
-			zombies++;
+			if (GetClientTeam(i) == 3)
+			{
+				humans++;
+				client = i;
+			}
+			else if (GetClientTeam(i) == 2)
+			{
+				zombies++;
+			}
 		}
 	}
 
@@ -126,13 +131,11 @@ public Action Event_PlayerDeath(Handle event, const char[] name, bool dontBroadc
 		CreateTimer(1.0, Timer_Beacon, client, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 		g_bBeaconActive = true;
 	}
-	
-	return;
 }
 
 public Action Event_RoundStart(Handle event, const char[] name, bool dontBroadcast)
 {
-	g_bRoundEnd = true;
+	g_bRoundEnd = false;
 	g_bBeaconActive = false;
 }
 
@@ -140,12 +143,6 @@ public Action Event_RoundEnd(Handle event, const char[] name, bool dontBroadcast
 {
 	g_bRoundEnd = true;
 	g_bBeaconActive = false;
-}
-
-public Action ZR_OnClientInfect(int &client, int &attacker, bool &motherInfect, bool &respawnOverride, bool &respawn)
-{
-	g_bRoundEnd = false;
-	return Plugin_Continue;
 }
 
 public Action Timer_Beacon(Handle timer, any client)
